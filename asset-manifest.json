@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.css": "/react-gh-pages/static/css/main.1dc6963f.css",
-    "main.js": "/react-gh-pages/static/js/main.519e4694.js",
-    "index.html": "/react-gh-pages/index.html",
-    "main.1dc6963f.css.map": "/react-gh-pages/static/css/main.1dc6963f.css.map",
-    "main.519e4694.js.map": "/react-gh-pages/static/js/main.519e4694.js.map"
+    "main.css": "/morpion/static/css/main.1dc6963f.css",
+    "main.js": "/morpion/static/js/main.519e4694.js",
+    "index.html": "/morpion/index.html",
+    "main.1dc6963f.css.map": "/morpion/static/css/main.1dc6963f.css.map",
+    "main.519e4694.js.map": "/morpion/static/js/main.519e4694.js.map"
   },
   "entrypoints": [
     "static/css/main.1dc6963f.css",
