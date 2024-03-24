@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/morpion/static/css/main.1dc6963f.css",
+    "main.js": "/morpion/static/js/main.519e4694.js",
+    "index.html": "/morpion/index.html",
+    "main.1dc6963f.css.map": "/morpion/static/css/main.1dc6963f.css.map",
+    "main.519e4694.js.map": "/morpion/static/js/main.519e4694.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.1dc6963f.css",
+    "static/js/main.519e4694.js"
+  ]
+}
