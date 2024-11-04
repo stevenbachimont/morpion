@@ -56,7 +56,8 @@ class Game extends React.Component {
         }
       ],
       stepNumber: 0,
-      xIsNext: true
+      xIsNext: true,
+      rewardTable: {}
     };
   }
 
@@ -94,9 +95,58 @@ class Game extends React.Component {
         emptySquares.push(j);
       }
     }
-    const randomIndex = Math.floor(Math.random() * emptySquares.length);
-    const randomSquare = emptySquares[randomIndex];
-    squares[randomSquare] = "O";
+
+    // Check for potential winning moves for the computer and make the move
+    for (let move of emptySquares) {
+      const newSquares = squares.slice();
+      newSquares[move] = "O";
+      if (calculateWinner(newSquares) === "O") {
+        squares[move] = "O";
+        this.setState({
+          history: this.state.history.concat([
+            {
+              squares: squares
+            }
+          ]),
+          stepNumber: this.state.history.length,
+          xIsNext: !this.state.xIsNext
+        });
+        return;
+      }
+    }
+
+    // Check for potential winning moves for the player and block them
+    for (let move of emptySquares) {
+      const newSquares = squares.slice();
+      newSquares[move] = "X";
+      if (calculateWinner(newSquares) === "X") {
+        squares[move] = "O";
+        this.setState({
+          history: this.state.history.concat([
+            {
+              squares: squares
+            }
+          ]),
+          stepNumber: this.state.history.length,
+          xIsNext: !this.state.xIsNext
+        });
+        return;
+      }
+    }
+
+    let bestMove = emptySquares[0];
+    let bestReward = -Infinity;
+    for (let move of emptySquares) {
+      const newSquares = squares.slice();
+      newSquares[move] = "O";
+      const reward = this.state.rewardTable[newSquares.join("")] || 0;
+      if (reward > bestReward) {
+        bestReward = reward;
+        bestMove = move;
+      }
+    }
+
+    squares[bestMove] = "O";
 
     this.setState({
       history: this.state.history.concat([
@@ -109,16 +159,22 @@ class Game extends React.Component {
     });
   }
 
-  jumpTo(step) {
-    this.setState({
-      stepNumber: step,
-      xIsNext: (step % 2) === 0
-    });
+  updateRewardTable(winner) {
+    const history = this.state.history;
+    const reward = winner === "O" ? 1 : winner === "X" ? -1 : 0;
+    for (let step of history) {
+      const squares = step.squares.join("");
+      if (!this.state.rewardTable[squares]) {
+        this.state.rewardTable[squares] = 0;
+      }
+      this.state.rewardTable[squares] += reward;
+    }
   }
 
   restartGame() {
-
     const winner = calculateWinner(this.state.history[this.state.history.length - 1].squares);
+    this.updateRewardTable(winner);
+
     const nextPlayer = winner ? (winner === "O" ? "O" : "X") : (this.state.xIsNext ? "X" : "O");
     this.setState({
       history: [
@@ -134,6 +190,13 @@ class Game extends React.Component {
         this.makeComputerMove(Array(9).fill(null));
       }, 1000);
     }
+  }
+
+  jumpTo(step) {
+    this.setState({
+      stepNumber: step,
+      xIsNext: (step % 2) === 0
+    });
   }
 
   render() {
@@ -159,8 +222,6 @@ class Game extends React.Component {
       status = "Next player: " + (this.state.xIsNext ? "X" : "O");
     }
 
-
-    const nextPlayer = winner ? (winner === "X" ? "O" : "X") : (this.state.xIsNext ? "X" : "O");
     return (
         <div className="game">
           <div className="game-board">
@@ -170,7 +231,7 @@ class Game extends React.Component {
             />
           </div>
           <div className="game-info">
-            <div className="status" >{status}</div>
+            <div className="status">{status}</div>
             <button className="button-50" onClick={() => this.restartGame()}>Rejouer</button>
             <ol>{moves}</ol>
           </div>
@@ -203,4 +264,3 @@ function calculateWinner(squares) {
   }
   return null;
 }
-
