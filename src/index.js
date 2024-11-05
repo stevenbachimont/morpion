@@ -96,7 +96,6 @@ class Game extends React.Component {
       }
     }
 
-    // Check for potential winning moves for the computer and make the move
     for (let move of emptySquares) {
       const newSquares = squares.slice();
       newSquares[move] = "O";
@@ -115,7 +114,6 @@ class Game extends React.Component {
       }
     }
 
-    // Check for potential winning moves for the player and block them
     for (let move of emptySquares) {
       const newSquares = squares.slice();
       newSquares[move] = "X";
@@ -239,8 +237,6 @@ class Game extends React.Component {
     );
   }
 }
-
-// ========================================
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<Game />);
